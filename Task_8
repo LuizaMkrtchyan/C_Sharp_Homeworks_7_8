@@ -1,0 +1,98 @@
+using System;
+namespace task_8
+{
+    class Program
+    {
+        //Knight moving in Matrix [8,8] with heuristic method. Any next move of the knight in the free
+        //field is selected by a special template with minimum value.Template is the number of knight moves in the
+        //initial chessboard.Display the current results of the heuristic run.
+        static void Main(string[] args)
+        {
+            int[,] template = {
+                {2,3,4,4,4,4,3,2 },
+                {3,4,6,6,6,6,4,3 },
+                {4,6,8,8,8,8,6,4 },
+                {4,6,8,8,8,8,6,4 },
+                {4,6,8,8,8,8,6,4 },
+                {4,6,8,8,8,8,6,4 },
+                {3,4,6,6,6,6,4,3 },
+                {2,3,4,4,4,4,3,2 }
+            };
+            int[,] board = new int[8, 8];
+            Console.Write("I koordinat: ");
+            int x = int.Parse(Console.ReadLine());
+            Console.Write("J koordinat: ");
+            int y = int.Parse(Console.ReadLine());
+            board[x, y] = 5;
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int i = 0; i < 8; i++)
+            {
+                Console.SetCursorPosition(20, i);
+                for (int j = 0; j < 8; j++)
+                {
+
+                    Console.Write(template[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.ResetColor();
+            Console.SetCursorPosition(0, 2);
+            Console.WriteLine();
+            bool t;
+            do
+            {
+                t = false;
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (board[i, j] == 5)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write(board[i, j] + " ");
+                            Console.ResetColor();
+                            board[i, j] = 3;
+                        }
+                        else if (board[i, j] == 3)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write(board[i, j] + " ");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.Write(board[i, j] + " ");
+                        }
+                    }
+                    Console.WriteLine();
+                }
+                int min = 9;
+                int mini = 0, minj = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        //List<int> moves = new List<int>();
+                        if (((x - i == 2 || i - x == 2) && (y - j == 1 || j - y == 1) || (x - i == 1 || i - x == 1) && (y - j == 2 || j - y == 2)) && board[i, j] != 3)
+                        {
+
+                            if (template[i, j] < min)
+                            {
+                                min = template[i, j];
+                                t = true;
+                                mini = i;
+                                minj = j;
+                            }
+                        }
+                    }
+                }
+                board[mini, minj] = 5;
+                x = mini;
+                y = minj;
+                template[x, y]--;
+                Console.WriteLine("----------------------");
+            } while (t);
+
+        }
+    }
+}
